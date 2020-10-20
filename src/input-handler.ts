@@ -99,5 +99,6 @@ function formatInputText(
   caretPosition = formatted.caretPosition;
 
   setCaretPosition(elem, caretPosition);
+
   onChange(value);
 }

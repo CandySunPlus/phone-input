@@ -32,8 +32,10 @@ export const App = () => {
   return (
     <>
       <Input
-        parse={char => {
-          return isNaN(parseInt(char)) ? undefined : char;
+        parse={(char, value) => {
+          if (value.length < countPlaceholder) {
+            return isNaN(parseInt(char)) ? undefined : char;
+          }
         }}
         format={formatter}
         onChange={value => {
