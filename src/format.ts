@@ -1,6 +1,6 @@
-import { InputState } from "./utils";
+import { InputState } from './utils';
 
-export type Formatter = (value: string) => { text?: string; template?: string; };
+export type Formatter = (value: string) => { text?: string; template?: string };
 
 export function format(value: string, caretPosition: number | null, formatter: Formatter): InputState {
   let { text, template } = formatter(value) ?? {};
@@ -11,7 +11,8 @@ export function format(value: string, caretPosition: number | null, formatter: F
   if (caretPosition === null) {
     caretPosition = text.length;
   } else {
-    let found = false, lastInputIndex = -1;
+    let found = false,
+      lastInputIndex = -1;
     for (let i = 0; i < text.length && i < template?.length; i++) {
       if (text[i] !== template[i]) {
         if (caretPosition === 0) {
@@ -30,4 +31,3 @@ export function format(value: string, caretPosition: number | null, formatter: F
   }
   return { value: text, caretPosition };
 }
-

@@ -1,7 +1,15 @@
-import { ChangeEvent, ClipboardEvent, KeyboardEvent } from "react";
-import { format, Formatter } from "./format";
-import { parse, Parser } from "./parse";
-import { edit, getCaretPosition, getOperation, getSelection, InputSelection, Operation, setCaretPosition } from "./utils";
+import { ChangeEvent, ClipboardEvent, KeyboardEvent } from 'react';
+import { format, Formatter } from './format';
+import { parse, Parser } from './parse';
+import {
+  edit,
+  getCaretPosition,
+  getOperation,
+  getSelection,
+  InputSelection,
+  Operation,
+  setCaretPosition
+} from './utils';
 
 export type InputChangeHandler = (value: string) => void;
 
@@ -11,11 +19,23 @@ function eraseSelection(elem: HTMLInputElement, selection: InputSelection) {
   setCaretPosition(elem, selection.start);
 }
 
-export function onInputChange(_event: ChangeEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
+export function onInputChange(
+  _event: ChangeEvent,
+  elem: HTMLInputElement,
+  _parse: Parser,
+  _format: Formatter,
+  onChange: InputChangeHandler
+) {
   formatInputText(elem, _parse, _format, onChange);
 }
 
-export function onInputPaste(_event: ClipboardEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
+export function onInputPaste(
+  _event: ClipboardEvent,
+  elem: HTMLInputElement,
+  _parse: Parser,
+  _format: Formatter,
+  onChange: InputChangeHandler
+) {
   const selection = getSelection(elem);
 
   if (selection) {
@@ -25,11 +45,23 @@ export function onInputPaste(_event: ClipboardEvent, elem: HTMLInputElement, _pa
   formatInputText(elem, _parse, _format, onChange);
 }
 
-export function onInputCut(_event: ClipboardEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
+export function onInputCut(
+  _event: ClipboardEvent,
+  elem: HTMLInputElement,
+  _parse: Parser,
+  _format: Formatter,
+  onChange: InputChangeHandler
+) {
   setTimeout(() => formatInputText(elem, _parse, _format, onChange));
 }
 
-export function onInputKeyDown(event: KeyboardEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
+export function onInputKeyDown(
+  event: KeyboardEvent,
+  elem: HTMLInputElement,
+  _parse: Parser,
+  _format: Formatter,
+  onChange: InputChangeHandler
+) {
   const operation = getOperation(event);
 
   switch (operation) {
@@ -46,7 +78,13 @@ export function onInputKeyDown(event: KeyboardEvent, elem: HTMLInputElement, _pa
   }
 }
 
-function formatInputText(elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler, operation?: Operation) {
+function formatInputText(
+  elem: HTMLInputElement,
+  _parse: Parser,
+  _format: Formatter,
+  onChange: InputChangeHandler,
+  operation?: Operation
+) {
   let { value, caretPosition } = parse(elem.value, getCaretPosition(elem), _parse);
 
   if (operation && caretPosition !== null) {

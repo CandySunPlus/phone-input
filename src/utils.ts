@@ -30,7 +30,7 @@ export function getSelection(elem: HTMLInputElement) {
 export enum Operation {
   Backspace = 'Backspace',
   Delete = 'Delete'
-};
+}
 
 export function getOperation(event: KeyboardEvent) {
   switch (event.key) {
@@ -54,7 +54,6 @@ export function setCaretPosition(elem: HTMLInputElement, position: number | null
   } else {
     elem.setSelectionRange(position, position);
   }
-
 }
 
 export function edit(value: string, caretPosition: number, operation: Operation) {
@@ -76,4 +75,3 @@ export function edit(value: string, caretPosition: number, operation: Operation)
 function isAndroid() {
   return /Android/i.test(window?.navigator?.userAgent ?? '');
 }
-
