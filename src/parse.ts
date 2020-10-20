@@ -1,12 +1,17 @@
 import { InputState } from "./utils";
 
-export type Parser = (char: string, value: string) => string;
+export type Parser = (char: string, value: string) => string | undefined;
 
-export function parse(text: string, caretPosition: number | null, parser: Parser) {
+export function parse(text: string, caretPosition: number | null, parser: Parser): InputState {
   let value = '', focusedIndex = 0;
 
   for (let i = 0; i < text.length; i++) {
     const char = parser(text[i], value);
+
+    if (char === undefined) {
+      continue;
+    }
+
     value += char;
 
     if (caretPosition !== null) {
@@ -25,5 +30,5 @@ export function parse(text: string, caretPosition: number | null, parser: Parser
   return {
     value,
     caretPosition: focusedIndex
-  } as InputState;
+  };
 }

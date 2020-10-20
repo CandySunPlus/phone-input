@@ -1,6 +1,6 @@
 import { KeyboardEvent } from 'react';
 
-interface InputSelection {
+export interface InputSelection {
   start: number;
   end: number;
 }
@@ -8,6 +8,16 @@ interface InputSelection {
 export interface InputState {
   value: string;
   caretPosition: number;
+}
+
+export function placeholderCount(placeholder: string, template: string) {
+  let count = 0;
+  for (const char of template.split('')) {
+    if (char === placeholder) {
+      count++;
+    }
+  }
+  return count;
 }
 
 export function getSelection(elem: HTMLInputElement) {

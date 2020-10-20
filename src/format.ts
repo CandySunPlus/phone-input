@@ -9,7 +9,7 @@ export function format(value: string, caretPosition: number | null, formatter: F
     return { value: text, caretPosition: caretPosition ?? text.length };
   }
   if (caretPosition === null) {
-    caretPosition = caretPosition ?? text.length;
+    caretPosition = text.length;
   } else {
     let found = false, lastInputIndex = -1;
     for (let i = 0; i < text.length && i < template?.length; i++) {

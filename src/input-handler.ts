@@ -1,20 +1,32 @@
 import { ChangeEvent, ClipboardEvent, KeyboardEvent } from "react";
 import { format, Formatter } from "./format";
 import { parse, Parser } from "./parse";
-import { edit, getCaretPosition, getOperation, getSelection, Operation, setCaretPosition } from "./utils";
+import { edit, getCaretPosition, getOperation, getSelection, InputSelection, Operation, setCaretPosition } from "./utils";
 
 export type InputChangeHandler = (value: string) => void;
+
+function eraseSelection(elem: HTMLInputElement, selection: InputSelection) {
+  let text = elem.value.slice(0, selection.start) + elem.value.slice(selection.end);
+  elem.value = text;
+  setCaretPosition(elem, selection.start);
+}
 
 export function onInputChange(_event: ChangeEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
   formatInputText(elem, _parse, _format, onChange);
 }
 
-export function onInputPaste(event: ClipboardEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
+export function onInputPaste(_event: ClipboardEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
+  const selection = getSelection(elem);
 
+  if (selection) {
+    eraseSelection(elem, selection);
+  }
+
+  formatInputText(elem, _parse, _format, onChange);
 }
 
-export function onInputCut(event: ClipboardEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
-
+export function onInputCut(_event: ClipboardEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
+  setTimeout(() => formatInputText(elem, _parse, _format, onChange));
 }
 
 export function onInputKeyDown(event: KeyboardEvent, elem: HTMLInputElement, _parse: Parser, _format: Formatter, onChange: InputChangeHandler) {
@@ -27,9 +39,7 @@ export function onInputKeyDown(event: KeyboardEvent, elem: HTMLInputElement, _pa
       const selection = getSelection(elem);
 
       if (selection) {
-        let text = elem.value.slice(0, selection.start) + elem.value.slice(selection.end);
-        elem.value = text;
-        setCaretPosition(elem, selection.start);
+        eraseSelection(elem, selection);
         return formatInputText(elem, _parse, _format, onChange);
       }
       return formatInputText(elem, _parse, _format, onChange, operation);
